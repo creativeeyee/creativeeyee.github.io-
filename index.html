@@ -10,18 +10,17 @@
             overflow: hidden;
             color: white;
 
-            /* BACKGROUND (CLEAN FIX) */
-            background: url('bg.jpg') center/cover no-repeat;
+            /* SIMPLE + CLEAN BACKGROUND */
+            background: url('bg.jpg') center center / cover no-repeat fixed;
         }
 
-        /* DARK OVERLAY (NO BLUR EDGE ISSUE) */
+        /* LIGHT OVERLAY (NOT HEAVY BLUR) */
         body::after {
             content: "";
             position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.35);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.25);
             top: 0;
             left: 0;
             z-index: 0;
@@ -30,7 +29,7 @@
         .desktop {
             position: relative;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             z-index: 1;
         }
 
@@ -88,7 +87,7 @@
             left: 50%;
             transform: translateX(-50%);
 
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15);
             backdrop-filter: blur(12px);
 
             padding: 12px 22px;
@@ -143,9 +142,9 @@
 
 <!-- DOCK -->
 <div class="dock">
-    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968520.png" onclick="openWindow('work')" title="Work">
-    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" onclick="openWindow('about')" title="About">
-    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" onclick="openWindow('contact')" title="Contact">
+    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968520.png" onclick="openWindow('work')">
+    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" onclick="openWindow('about')">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" onclick="openWindow('contact')">
 </div>
 
 <script>
@@ -168,7 +167,7 @@ function openWindow(type) {
 
     if(type === "contact") {
         title.innerText = "Contact";
-        content.innerHTML = "📩 Email / Instagram here";
+        content.innerHTML = "📩 Add your details";
     }
 
     win.style.display = "block";
