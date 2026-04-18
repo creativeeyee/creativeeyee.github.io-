@@ -7,16 +7,9 @@
 body {
     margin: 0;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     background: url('bg.jpg') no-repeat center center fixed;
     background-size: cover;
-}
-
-/* DESKTOP */
-.desktop {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
 }
 
 /* ICON */
@@ -24,7 +17,6 @@ body {
     position: absolute;
     text-align: center;
     cursor: grab;
-    transition: transform 0.2s;
 }
 
 .icon img {
@@ -36,15 +28,11 @@ body {
     font-size: 14px;
 }
 
-.icon:hover {
-    transform: scale(1.1);
-}
-
 /* WINDOW */
 .window {
     position: absolute;
     width: 600px;
-    height: 400px;
+    height: 420px;
     background: rgba(255,255,255,0.15);
     backdrop-filter: blur(20px);
     border-radius: 12px;
@@ -54,7 +42,6 @@ body {
     left: 200px;
 }
 
-/* HEADER */
 .window-header {
     height: 40px;
     background: rgba(0,0,0,0.2);
@@ -74,205 +61,260 @@ body {
     cursor: pointer;
 }
 
-/* CONTENT */
 .window-content {
     padding: 10px;
-    overflow: auto;
     color: white;
+    overflow: auto;
+}
+
+/* FOLDER UI */
+.folder-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.folder-item:hover {
+    background: rgba(255,255,255,0.15);
 }
 
 /* GRID */
 .grid {
     display: flex;
-    flex-wrap: wrap;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .grid img {
     width: 120px;
-    border-radius: 6px;
     cursor: pointer;
 }
 
 /* VIEWER */
 #viewer {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top:0;left:0;
+    width:100%;
+    height:100%;
     background: rgba(0,0,0,0.95);
-    display: none;
-    justify-content: center;
-    align-items: center;
+    display:none;
+    justify-content:center;
+    align-items:center;
 }
 
 #viewer img {
-    max-width: 80%;
-    max-height: 80%;
-    transition: transform 0.2s;
+    max-width:80%;
+    max-height:80%;
+}
+
+/* GAME */
+#gameBox {
+    width:100%;
+    height:300px;
+    background:black;
+    position:relative;
+}
+
+.player {
+    width:30px;
+    height:30px;
+    background:red;
+    position:absolute;
+    top:50%;
+    left:50%;
 }
 
 /* DOCK */
 .dock {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
     background: rgba(255,255,255,0.2);
-    backdrop-filter: blur(10px);
-    padding: 10px 20px;
-    border-radius: 20px;
-    display: flex;
-    gap: 15px;
+    padding:10px 20px;
+    border-radius:20px;
+    display:flex;
+    gap:15px;
 }
 
 .dock img {
-    width: 40px;
-    transition: 0.2s;
-}
-
-.dock img:hover {
-    transform: scale(1.2);
+    width:40px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="desktop">
-
-<!-- PORTFOLIO ICON -->
+<!-- DESKTOP ICONS -->
 <div class="icon" id="portfolioIcon" style="top:80px; left:80px;">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <p>Portfolio</p>
+<img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+<p>Portfolio</p>
 </div>
 
-<!-- WINDOW -->
+<div class="icon" id="aboutIcon" style="top:180px; left:80px;">
+<img src="https://cdn-icons-png.flaticon.com/512/337/337946.png">
+<p>About</p>
+</div>
+
+<div class="icon" id="gameIcon" style="top:280px; left:80px;">
+<img src="https://cdn-icons-png.flaticon.com/512/833/833472.png">
+<p>Games</p>
+</div>
+
+<!-- PORTFOLIO WINDOW -->
 <div class="window" id="portfolioWindow">
+<div class="window-header" id="drag1">
+<span>Portfolio</span>
+<div class="close-btn" onclick="closeWin('portfolioWindow')"></div>
+</div>
 
-    <div class="window-header" id="dragHeader">
-        <span>Portfolio</span>
-        <div class="close-btn" onclick="closeWindow()"></div>
-    </div>
+<div class="window-content">
 
-    <div class="window-content">
+<div id="folderView">
+<div class="folder-item" onclick="openFolder()">📁 Graphic Design</div>
+<div class="folder-item" onclick="openFolder()">📁 Clients</div>
+</div>
 
-        <!-- FOLDER VIEW -->
-        <div id="folderView">
-            <div onclick="openFolder('graphic')">📁 Graphic Design</div>
-            <div onclick="openFolder('clients')">📁 Clients</div>
-        </div>
+<div id="imageGrid" style="display:none;">
+<button onclick="backFolder()">⬅ Back</button>
 
-        <!-- IMAGE GRID -->
-        <div id="imageGrid" style="display:none;">
-            <button onclick="backToFolders()">⬅ Back</button>
+<div class="grid">
+<img src="img1.jpg" onclick="openViewer(this.src)">
+<img src="img2.jpg" onclick="openViewer(this.src)">
+<img src="img3.jpg" onclick="openViewer(this.src)">
+</div>
 
-            <div class="grid">
-                <img src="img1.jpg" onclick="openViewer(this.src)">
-                <img src="img2.jpg" onclick="openViewer(this.src)">
-                <img src="img3.jpg" onclick="openViewer(this.src)">
-            </div>
-        </div>
+</div>
 
-    </div>
+</div>
+</div>
+
+<!-- ABOUT WINDOW -->
+<div class="window" id="aboutWindow">
+<div class="window-header" id="drag2">
+<span>About</span>
+<div class="close-btn" onclick="closeWin('aboutWindow')"></div>
+</div>
+
+<div class="window-content">
+<p>Hi, I'm Avi 👋</p>
+<p>Multimedia Designer</p>
+
+<br>
+
+<a href="resume.docx" download>
+📄 Download Resume
+</a>
+
+</div>
+</div>
+
+<!-- GAME WINDOW -->
+<div class="window" id="gameWindow">
+<div class="window-header" id="drag3">
+<span>Mini Game</span>
+<div class="close-btn" onclick="closeWin('gameWindow')"></div>
+</div>
+
+<div class="window-content">
+
+<div id="gameBox">
+<div class="player" id="player"></div>
+</div>
+
+<p>Use arrow keys to move 🔥</p>
+
+</div>
 </div>
 
 <!-- VIEWER -->
-<div id="viewer">
-    <span onclick="closeViewer()" style="position:absolute;top:20px;right:20px;color:white;font-size:20px;">❌</span>
-    <img id="viewerImg">
+<div id="viewer" onclick="closeViewer()">
+<img id="viewerImg">
 </div>
 
 <!-- DOCK -->
 <div class="dock">
-    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968520.png">
-    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png">
-    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
-</div>
-
+<img src="https://cdn-icons-png.flaticon.com/512/5968/5968520.png">
+<img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png">
+<img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
 </div>
 
 <script>
 
-/* OPEN WINDOW */
-document.getElementById("portfolioIcon").ondblclick = () => {
-    document.getElementById("portfolioWindow").style.display = "flex";
-};
+/* OPEN WINDOWS */
+portfolioIcon.ondblclick=()=>portfolioWindow.style.display="flex";
+aboutIcon.ondblclick=()=>aboutWindow.style.display="flex";
+gameIcon.ondblclick=()=>gameWindow.style.display="flex";
 
-function closeWindow() {
-    document.getElementById("portfolioWindow").style.display = "none";
+function closeWin(id){
+document.getElementById(id).style.display="none";
 }
 
-/* DRAG ICON */
-document.querySelectorAll(".icon").forEach(icon => {
-    let offsetX, offsetY, drag = false;
+/* DRAG */
+function makeDrag(win,header){
+let drag=false,x,y;
 
-    icon.addEventListener("mousedown", (e) => {
-        if(e.button !== 0) return;
-        drag = true;
-        offsetX = e.clientX - icon.offsetLeft;
-        offsetY = e.clientY - icon.offsetTop;
-        e.preventDefault();
-    });
-
-    document.addEventListener("mousemove", (e) => {
-        if(!drag) return;
-        icon.style.left = (e.clientX - offsetX) + "px";
-        icon.style.top = (e.clientY - offsetY) + "px";
-    });
-
-    document.addEventListener("mouseup", () => drag = false);
-});
-
-/* DRAG WINDOW */
-let win = document.getElementById("portfolioWindow");
-let header = document.getElementById("dragHeader");
-
-let dragging = false, x, y;
-
-header.onmousedown = (e) => {
-    dragging = true;
-    x = e.clientX - win.offsetLeft;
-    y = e.clientY - win.offsetTop;
+header.onmousedown=e=>{
+drag=true;
+x=e.clientX-win.offsetLeft;
+y=e.clientY-win.offsetTop;
 };
 
-document.onmousemove = (e) => {
-    if(!dragging) return;
-    win.style.left = (e.clientX - x) + "px";
-    win.style.top = (e.clientY - y) + "px";
+document.onmousemove=e=>{
+if(!drag)return;
+win.style.left=(e.clientX-x)+"px";
+win.style.top=(e.clientY-y)+"px";
 };
 
-document.onmouseup = () => dragging = false;
-
-/* FOLDER SYSTEM */
-function openFolder() {
-    document.getElementById("folderView").style.display = "none";
-    document.getElementById("imageGrid").style.display = "block";
+document.onmouseup=()=>drag=false;
 }
 
-function backToFolders() {
-    document.getElementById("folderView").style.display = "block";
-    document.getElementById("imageGrid").style.display = "none";
+makeDrag(portfolioWindow,drag1);
+makeDrag(aboutWindow,drag2);
+makeDrag(gameWindow,drag3);
+
+/* FOLDER */
+function openFolder(){
+folderView.style.display="none";
+imageGrid.style.display="block";
+}
+function backFolder(){
+folderView.style.display="block";
+imageGrid.style.display="none";
 }
 
 /* VIEWER */
-function openViewer(src) {
-    document.getElementById("viewer").style.display = "flex";
-    document.getElementById("viewerImg").src = src;
+function openViewer(src){
+viewer.style.display="flex";
+viewerImg.src=src;
 }
-
-function closeViewer() {
-    document.getElementById("viewer").style.display = "none";
+function closeViewer(){
+viewer.style.display="none";
 }
 
 /* ZOOM */
-let scale = 1;
-document.getElementById("viewer").addEventListener("wheel", (e) => {
-    e.preventDefault();
-    scale += e.deltaY < 0 ? 0.1 : -0.1;
-    scale = Math.max(0.5, Math.min(scale, 3));
-    document.getElementById("viewerImg").style.transform = `scale(${scale})`;
+let scale=1;
+viewer.onwheel=e=>{
+e.preventDefault();
+scale+=e.deltaY<0?0.1:-0.1;
+scale=Math.max(0.5,Math.min(3,scale));
+viewerImg.style.transform=`scale(${scale})`;
+};
+
+/* GAME */
+let player=document.getElementById("player");
+
+document.addEventListener("keydown",e=>{
+let top=player.offsetTop;
+let left=player.offsetLeft;
+
+if(e.key==="ArrowUp") player.style.top=(top-10)+"px";
+if(e.key==="ArrowDown") player.style.top=(top+10)+"px";
+if(e.key==="ArrowLeft") player.style.left=(left-10)+"px";
+if(e.key==="ArrowRight") player.style.left=(left+10)+"px";
 });
 
 </script>
