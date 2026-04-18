@@ -181,23 +181,33 @@ function closeWindow() {
 // DRAG ICONS
 document.querySelectorAll(".icon").forEach(icon => {
 
-    let offsetX, offsetY, isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+    let isDragging = false;
 
     icon.addEventListener("mousedown", (e) => {
         isDragging = true;
+
         offsetX = e.clientX - icon.offsetLeft;
         offsetY = e.clientY - icon.offsetTop;
+
         icon.style.cursor = "grabbing";
     });
 
     document.addEventListener("mousemove", (e) => {
-        if(isDragging) {
-            icon.style.left = (e.clientX - offsetX) + "px";
-            icon.style.top = (e.clientY - offsetY) + "px";
-        }
+        if (!isDragging) return;
+
+        icon.style.left = (e.clientX - offsetX) + "px";
+        icon.style.top = (e.clientY - offsetY) + "px";
     });
 
     document.addEventListener("mouseup", () => {
+        isDragging = false;
+        icon.style.cursor = "grab";
+    });
+
+    /* 🔥 EXTRA SAFETY: if mouse leaves screen */
+    document.addEventListener("mouseleave", () => {
         isDragging = false;
         icon.style.cursor = "grab";
     });
