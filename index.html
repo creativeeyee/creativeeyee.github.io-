@@ -171,6 +171,9 @@ body {
 <script>
 
 /* WINDOW */
+<script>
+
+/* WINDOW CONTROL */
 function openWindow(id){
   document.getElementById(id).style.display = "block";
 }
@@ -185,30 +188,48 @@ document.querySelectorAll(".icon").forEach(icon => {
   icon.style.top = Math.random() * (window.innerHeight - 150) + "px";
 });
 
-/* DRAG SYSTEM (LEFT CLICK HOLD ONLY) */
+/* DRAG + DOUBLE CLICK SYSTEM */
 document.querySelectorAll(".icon").forEach(icon => {
 
 let offsetX = 0;
 let offsetY = 0;
 let isDragging = false;
+let moved = false;
 
+/* DRAG START */
 icon.addEventListener("mousedown", function(e) {
     if (e.button !== 0) return;
 
     isDragging = true;
+    moved = false;
+
     offsetX = e.clientX - icon.offsetLeft;
     offsetY = e.clientY - icon.offsetTop;
 });
 
+/* DRAG MOVE */
 document.addEventListener("mousemove", function(e) {
     if (!isDragging) return;
+
+    moved = true;
 
     icon.style.left = (e.clientX - offsetX) + "px";
     icon.style.top = (e.clientY - offsetY) + "px";
 });
 
+/* DRAG END */
 document.addEventListener("mouseup", function() {
     isDragging = false;
+});
+
+/* DOUBLE CLICK ONLY OPENS */
+icon.addEventListener("dblclick", function() {
+    if (moved) return; // prevent open after drag
+
+    const target = icon.getAttribute("onclick");
+    if (target) {
+        eval(target);
+    }
 });
 
 /* REMOVE 🚫 BUG */
