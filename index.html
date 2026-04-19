@@ -23,10 +23,6 @@ body {
   user-select: none;
 }
 
-.icon:active {
-  cursor: grabbing;
-}
-
 .icon img {
   width: 60px;
   pointer-events: none;
@@ -46,8 +42,8 @@ body {
 /* WINDOWS */
 .window {
   position: absolute;
-  width: 400px;
-  height: 300px;
+  width: 500px;
+  height: 350px;
   top: 120px;
   left: 200px;
   background: rgba(255,255,255,0.15);
@@ -55,6 +51,7 @@ body {
   border-radius: 12px;
   padding: 15px;
   display: none;
+  overflow: auto;
 }
 
 .close {
@@ -63,6 +60,30 @@ body {
   top: 5px;
   color: red;
   cursor: pointer;
+}
+
+/* GRID */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  padding: 10px;
+}
+
+.file {
+  width: 80px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.file:hover {
+  transform: scale(1.1);
+}
+
+.file span {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
 }
 
 /* DOCK */
@@ -76,8 +97,6 @@ body {
   padding: 12px 25px;
   border-radius: 25px;
   display: flex;
-  align-items: center;
-  z-index: 999;
 }
 
 .dock img {
@@ -96,12 +115,12 @@ body {
 <body>
 
 <!-- ICONS -->
-<div class="icon" ondblclick="openWindow('portfolio')">
+<div class="icon" ondblclick="openPortfolio()">
   <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
   <span>Portfolio</span>
 </div>
 
-<div class="icon" ondblclick="openWindow('about')">
+<div class="icon" ondblclick="openResume()">
   <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png">
   <span>Resume</span>
 </div>
@@ -111,122 +130,142 @@ body {
   <span>Games ❤️</span>
 </div>
 
-<!-- WINDOWS -->
-<div id="portfolio" class="window">
-  <div class="close" onclick="closeWindow('portfolio')">●</div>
-  <h3>Portfolio</h3>
-  <p>Graphic Design</p>
-  <p>Clients</p>
-</div>
-
-<div id="about" class="window">
-  <div class="close" onclick="closeWindow('about')">●</div>
-  <h3>Resume</h3>
-  <a href="resume.pdf" download>Download PDF</a>
-</div>
-
-<div id="games" class="window">
-  <div class="close" onclick="closeWindow('games')">●</div>
-  <h3>Mini Game ❤️</h3>
-  <button onclick="alert('Game coming soon 😄')">Play</button>
+<!-- WINDOW -->
+<div id="window" class="window">
+  <div class="close" onclick="closeWindow()">●</div>
+  <div class="window-content"></div>
 </div>
 
 <!-- DOCK -->
 <div class="dock">
 
-  <a href="https://wa.me/919537235783" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
-  </a>
+<a href="https://wa.me/919537235783" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+</a>
 
-  <a href="mailto:avinash.nair274@gmail.com">
-    <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png">
-  </a>
+<a href="mailto:avinash.nair274@gmail.com">
+<img src="https://cdn-icons-png.flaticon.com/512/732/732200.png">
+</a>
 
-  <a href="https://www.instagram.com/creeativeye" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
-  </a>
+<a href="https://www.instagram.com/creeativeye" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
+</a>
 
-  <a href="https://www.linkedin.com/in/avinash-nair-720230104" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/145/145807.png">
-  </a>
+<a href="https://www.linkedin.com/in/avinash-nair-720230104" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/145/145807.png">
+</a>
 
-  <!-- FIXED BEHANCE -->
-  <a href="https://www.behance.net/avinashnair274/projects" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/145/145799.png">
-  </a>
+<a href="https://www.behance.net/avinashnair274/projects" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/145/145799.png">
+</a>
 
-  <a href="https://dribbble.com/AvinashNair" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/733/733544.png">
-  </a>
+<a href="https://dribbble.com/AvinashNair" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/733/733544.png">
+</a>
 
 </div>
 
-<!-- SCRIPT -->
 <script>
 
 /* WINDOW */
-function openWindow(id){
-  document.getElementById(id).style.display = "block";
+function openWindow(){
+  document.getElementById("window").style.display = "block";
+}
+function closeWindow(){
+  document.getElementById("window").style.display = "none";
 }
 
-function closeWindow(id){
-  document.getElementById(id).style.display = "none";
+/* RESUME */
+function openResume(){
+  window.open("resume.pdf","_blank");
 }
 
-/* LOAD AFTER PAGE READY */
-window.onload = function() {
+/* RANDOM + DRAG */
+window.onload = function(){
 
-  const icons = document.querySelectorAll(".icon");
+const icons = document.querySelectorAll(".icon");
 
-  icons.forEach(icon => {
+icons.forEach(icon=>{
 
-    /* RANDOM POSITION (NO CORNER BUG) */
-    const x = Math.random() * (window.innerWidth - 120);
-    const y = Math.random() * (window.innerHeight - 180);
+icon.style.left = Math.random()*(window.innerWidth-120)+"px";
+icon.style.top = Math.random()*(window.innerHeight-180)+"px";
 
-    icon.style.left = x + "px";
-    icon.style.top = y + "px";
+let offsetX,offsetY,isDragging=false,moved=false;
 
-    let offsetX = 0;
-    let offsetY = 0;
-    let isDragging = false;
-    let moved = false;
+icon.addEventListener("mousedown",e=>{
+if(e.button!==0) return;
+isDragging=true;
+moved=false;
 
-    /* DRAG START */
-    icon.addEventListener("mousedown", function(e) {
-      if (e.button !== 0) return;
+offsetX=e.clientX-icon.offsetLeft;
+offsetY=e.clientY-icon.offsetTop;
 
-      isDragging = true;
-      moved = false;
+document.body.style.userSelect="none";
+});
 
-      offsetX = e.clientX - icon.offsetLeft;
-      offsetY = e.clientY - icon.offsetTop;
+document.addEventListener("mousemove",e=>{
+if(!isDragging) return;
 
-      document.body.style.userSelect = "none";
-    });
+moved=true;
 
-    /* DRAG MOVE */
-    document.addEventListener("mousemove", function(e) {
-      if (!isDragging) return;
+icon.style.left=(e.clientX-offsetX)+"px";
+icon.style.top=(e.clientY-offsetY)+"px";
+});
 
-      moved = true;
+document.addEventListener("mouseup",()=>{
+isDragging=false;
+document.body.style.userSelect="auto";
+});
 
-      icon.style.left = (e.clientX - offsetX) + "px";
-      icon.style.top = (e.clientY - offsetY) + "px";
-    });
+icon.ondragstart=()=>false;
 
-    /* DRAG END */
-    document.addEventListener("mouseup", function() {
-      isDragging = false;
-      document.body.style.userSelect = "auto";
-    });
-
-    /* PREVENT 🚫 BUG */
-    icon.ondragstart = () => false;
-
-  });
+});
 
 };
+
+/* PORTFOLIO SYSTEM */
+let data={};
+
+fetch("data.json")
+.then(res=>res.json())
+.then(d=>data=d);
+
+function openPortfolio(){
+openWindow();
+
+document.querySelector(".window-content").innerHTML=`
+<div class="grid">
+<div class="file" onclick="openFolder('graphic')">📁<span>Graphic</span></div>
+<div class="file" onclick="openFolder('clients')">📁<span>Clients</span></div>
+</div>`;
+}
+
+function openFolder(type){
+let items=data[type];
+
+let html=`<div class="grid">`;
+
+items.forEach(i=>{
+html+=`
+<div class="file" onclick="openImage('${i}')">
+🖼️
+<span>${i.split('/').pop()}</span>
+</div>`;
+});
+
+html+=`</div>`;
+
+document.querySelector(".window-content").innerHTML=html;
+}
+
+function openImage(src){
+document.querySelector(".window-content").innerHTML=`
+<div style="text-align:center">
+<img src="${src}" style="max-width:100%;max-height:70vh;border-radius:10px;">
+<br><br>
+<button onclick="openPortfolio()">⬅ Back</button>
+</div>`;
+}
 
 </script>
 
