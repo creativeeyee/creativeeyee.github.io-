@@ -1,214 +1,232 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Avi Desktop</title>
+<title>Avi OS</title>
 
 <style>
 body {
-  margin:0;
+  margin: 0;
+  overflow: hidden;
   font-family: Arial;
-  background:url('bg.jpg') center/cover no-repeat;
-  overflow:hidden;
+  height: 100vh;
+  width: 100vw;
+  background: url('bg.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 
-/* ICON */
+/* ICONS */
 .icon {
-  position:absolute;
-  width:90px;
-  text-align:center;
-  cursor:pointer;
-  color:white;
+  position: absolute !important;
+  width: 80px;
+  text-align: center;
+  cursor: grab;
+  user-select: none;
+}
+
+.icon:active {
+  cursor: grabbing;
 }
 
 .icon img {
-  width:50px;
+  width: 60px;
+  pointer-events: none;
 }
 
-.icon p {
-  font-size:12px;
+.icon span {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: rgba(0,0,0,0.65);
 }
 
-/* WINDOW */
+.icon:hover {
+  transform: scale(1.1);
+}
+
+/* WINDOWS */
 .window {
-  position:absolute;
-  top:80px;
-  left:200px;
-  width:600px;
-  height:450px;
-  background:rgba(255,255,255,0.15);
+  position: absolute;
+  width: 400px;
+  height: 300px;
+  top: 120px;
+  left: 200px;
+  background: rgba(255,255,255,0.15);
   backdrop-filter: blur(20px);
-  border-radius:15px;
-  padding:20px;
-  display:none;
+  border-radius: 12px;
+  padding: 15px;
+  display: none;
 }
 
 .close {
-  position:absolute;
-  right:10px;
-  top:10px;
-  width:12px;
-  height:12px;
-  background:red;
-  border-radius:50%;
-  cursor:pointer;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  color: red;
+  cursor: pointer;
 }
 
-/* GALLERY */
-.gallery {
-  display:flex;
-  flex-wrap:wrap;
+/* DOCK */
+.dock {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  padding: 12px 25px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  z-index: 999;
 }
 
-.gallery img {
-  width:120px;
-  margin:10px;
-  cursor:pointer;
+.dock img {
+  width: 42px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-/* VIEWER */
-.viewer {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  display:none;
-  background:rgba(0,0,0,0.8);
-  align-items:center;
-  justify-content:center;
-}
-
-.viewer img {
-  max-width:90%;
-  max-height:90%;
-}
-
-/* SOCIAL BAR */
-.social {
-  position:absolute;
-  bottom:20px;
-  width:100%;
-  text-align:center;
-}
-
-.social img {
-  width:40px;
-  margin:0 10px;
+.dock img:hover {
+  transform: scale(1.3);
 }
 </style>
-
 </head>
 
 <body>
 
 <!-- ICONS -->
-<div class="icon" onclick="openFolder('social_media')">
+<div class="icon" ondblclick="openWindow('portfolio')">
   <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>Social Media</p>
+  <span>Portfolio</span>
 </div>
 
-<div class="icon" onclick="openFolder('banners')">
-  <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>Banners</p>
-</div>
-
-<div class="icon" onclick="openFolder('posters')">
-  <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>Posters</p>
-</div>
-
-<div class="icon" onclick="openFolder('brochures')">
-  <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>Brochures</p>
-</div>
-
-<div class="icon" onclick="openFolder('visualization')">
-  <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>3D Visualization</p>
-</div>
-
-<div class="icon" onclick="openFolder('tiles')">
-  <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>Tiles</p>
-</div>
-
-<div class="icon" onclick="openFolder('motion')">
-  <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>Motion & Video</p>
-</div>
-
-<div class="icon" onclick="openFolder('photography')">
-  <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>Photography</p>
-</div>
-
-<div class="icon" onclick="openFolder('branding')">
-  <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-  <p>Branding</p>
-</div>
-
-<div class="icon" onclick="window.open('resume.pdf')">
+<div class="icon" ondblclick="openWindow('about')">
   <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png">
-  <p>Resume</p>
+  <span>Resume</span>
 </div>
 
-<!-- WINDOW -->
-<div class="window" id="window">
-  <div class="close" onclick="closeWindow()"></div>
-  <div id="content"></div>
+<div class="icon" ondblclick="openWindow('games')">
+  <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png">
+  <span>Games ❤️</span>
 </div>
 
-<!-- VIEWER -->
-<div class="viewer" id="viewer" onclick="closeViewer()">
-  <img id="viewerImg">
+<!-- WINDOWS -->
+<div id="portfolio" class="window">
+  <div class="close" onclick="closeWindow('portfolio')">●</div>
+  <h3>Portfolio</h3>
+  <p>Graphic Design</p>
+  <p>Clients</p>
 </div>
 
-<!-- SOCIAL -->
-<div class="social">
-  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
-  <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png">
-  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
+<div id="about" class="window">
+  <div class="close" onclick="closeWindow('about')">●</div>
+  <h3>Resume</h3>
+  <a href="resume.pdf" download>Download PDF</a>
 </div>
 
+<div id="games" class="window">
+  <div class="close" onclick="closeWindow('games')">●</div>
+  <h3>Mini Game ❤️</h3>
+  <button onclick="alert('Game coming soon 😄')">Play</button>
+</div>
+
+<!-- DOCK -->
+<div class="dock">
+
+  <a href="https://wa.me/919537235783" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+  </a>
+
+  <a href="mailto:avinash.nair274@gmail.com">
+    <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png">
+  </a>
+
+  <a href="https://www.instagram.com/creeativeye" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
+  </a>
+
+  <a href="https://www.linkedin.com/in/avinash-nair-720230104" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/145/145807.png">
+  </a>
+
+  <!-- FIXED BEHANCE -->
+  <a href="https://www.behance.net/avinashnair274/projects" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733609.png">
+  </a>
+
+  <a href="https://dribbble.com/AvinashNair" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733544.png">
+  </a>
+
+</div>
+
+<!-- SCRIPT -->
 <script>
 
-// RANDOM CLUTTER 💥
-document.querySelectorAll('.icon').forEach(icon=>{
-  icon.style.left = Math.random()*90 + "vw";
-  icon.style.top = Math.random()*80 + "vh";
-});
+/* WINDOW */
+function openWindow(id){
+  document.getElementById(id).style.display = "block";
+}
 
-// LOAD JSON
-let data={};
-fetch("data.json").then(r=>r.json()).then(d=>data=d);
+function closeWindow(id){
+  document.getElementById(id).style.display = "none";
+}
 
-// OPEN FOLDER
-function openFolder(name){
-  let html='<div class="gallery">';
-  data[name].forEach(img=>{
-    html+=`<img src="${img}" onclick="openViewer('${img}')">`;
+/* LOAD AFTER PAGE READY */
+window.onload = function() {
+
+  const icons = document.querySelectorAll(".icon");
+
+  icons.forEach(icon => {
+
+    /* RANDOM POSITION (NO CORNER BUG) */
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 180);
+
+    icon.style.left = x + "px";
+    icon.style.top = y + "px";
+
+    let offsetX = 0;
+    let offsetY = 0;
+    let isDragging = false;
+    let moved = false;
+
+    /* DRAG START */
+    icon.addEventListener("mousedown", function(e) {
+      if (e.button !== 0) return;
+
+      isDragging = true;
+      moved = false;
+
+      offsetX = e.clientX - icon.offsetLeft;
+      offsetY = e.clientY - icon.offsetTop;
+
+      document.body.style.userSelect = "none";
+    });
+
+    /* DRAG MOVE */
+    document.addEventListener("mousemove", function(e) {
+      if (!isDragging) return;
+
+      moved = true;
+
+      icon.style.left = (e.clientX - offsetX) + "px";
+      icon.style.top = (e.clientY - offsetY) + "px";
+    });
+
+    /* DRAG END */
+    document.addEventListener("mouseup", function() {
+      isDragging = false;
+      document.body.style.userSelect = "auto";
+    });
+
+    /* PREVENT 🚫 BUG */
+    icon.ondragstart = () => false;
+
   });
-  html+='</div>';
 
-  document.getElementById("window").style.display="block";
-  document.getElementById("content").innerHTML=html;
-}
-
-// CLOSE
-function closeWindow(){
-  document.getElementById("window").style.display="none";
-}
-
-// VIEWER
-function openViewer(src){
-  viewer.style.display="flex";
-  viewerImg.src=src;
-}
-
-function closeViewer(){
-  viewer.style.display="none";
-}
+};
 
 </script>
 
